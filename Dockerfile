@@ -15,8 +15,8 @@ COPY scripts/docker/servers_from_env.sh /docker-entrypoint.d/30-shlink-servers-j
 COPY --from=node /shlink-web-client/build /usr/share/nginx/html
 
 # This is required by 30-shlink-servers-json.sh to be writable for UID
-RUN echo '[]' > /usr/share/nginx/html/servers.json \
-    && chown $UID:0 /usr/share/nginx/html/servers.json
+# Optional: set correct ownership only, without overwriting
+RUN chown 101:0 /usr/share/nginx/html/servers.json || true
 
 # Switch to non-privileged UID as the last step
 USER $UID
